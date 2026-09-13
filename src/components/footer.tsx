@@ -3,52 +3,53 @@ import { PrismicNextLink } from "@prismicio/next";
 import Image from "next/image";
 
 const queryFooterNavigation = () => {
-	const client = createClient();
-	return client.getSingle("categorized_navigation", {
-		fetchLinks: [
-			"navigation_group.group_label",
-			"navigation_group.navigations",
-		],
-	});
+    const client = createClient();
+    return client.getSingle("categorized_navigation", {
+        fetchLinks: [
+            "navigation_group.group_label",
+            "navigation_group.navigations",
+        ],
+    });
 };
 
 export default async function Footer() {
-	const { data } = await queryFooterNavigation();
-
-	return (
-		<footer className="grid items-start w-full max-w-6xl gap-10 px-6 py-10 mx-auto md:py-16 md:grid-cols-2 md:justify-between">
-			<div className="order-last mx-auto md:order-first md:mx-0 font-marcellus">
-				<span className="text-[48px] leading-tight ">B100g</span>
-				<span className="flex gap-2 text-2xl leading-tight">
-					By
-					<Image
-						src={"/kanzoon-logo.svg"}
-						alt="Kanzoon Logo"
-						width={115}
-						height={25}
-					/>
-				</span>
-			</div>
-			<div className="flex flex-col items-start justify-between w-full gap-10 md:flex-row">
-				{data.nav_group.map((group: any) => (
-					<div key={group.id} className="grid">
-						<b className="p-2">{group.items.data.group_label}</b>
-						<ul className="grid">
-							{group.items.data.navigations.map((nav: any) => (
-								<li key={nav.link.id} className="contents">
-									<PrismicNextLink
-										className="p-2"
-										field={nav.link}
-										target={nav.link.target}
-									>
-										{nav.label}
-									</PrismicNextLink>
-								</li>
-							))}
-						</ul>
-					</div>
-				))}
-			</div>
-		</footer>
-	);
+    const { data } = await queryFooterNavigation();
+    return (
+        <footer className="grid items-start w-full max-w-6xl gap-10 px-6 py-10 mx-auto md:py-16 md:grid-cols-2 md:justify-between">
+            <div className="order-last mx-auto md:order-first md:mx-0 font-marcellus">
+                <span className="relative text-[48px] leading-tight ">
+                    B100g
+                    <span className="flex gap-2 text-2xl leading-tight">
+                        By
+                        <Image
+                            src={"/kanzoon-logo.svg"}
+                            alt="Kanzoon Logo"
+                            width={115}
+                            height={25}
+                        />
+                    </span>
+                </span>
+            </div>
+            <div className="flex flex-col items-start justify-between w-full gap-10 md:flex-row">
+                {data.nav_group.map((group: any) => (
+                    <div key={group.id} className="grid">
+                        <b className="p-2">{group.items.data.group_label}</b>
+                        <ul className="grid">
+                            {group.items.data.navigations.map((nav: any) => (
+                                <li key={nav.link.id} className="contents">
+                                    <PrismicNextLink
+                                        className="p-2"
+                                        field={nav.link}
+                                        target={nav.link.target}
+                                    >
+                                        {nav.label}
+                                    </PrismicNextLink>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+            </div>
+        </footer>
+    );
 }
